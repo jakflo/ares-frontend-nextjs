@@ -1,4 +1,5 @@
-import '../styles/globals.css'
+import '../styles/globals.css';
+import styles from '../styles/astro.css';
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />

@@ -96,7 +96,7 @@ export default class Search extends React.Component {
         }
     }    
     setError = (error) => {
-        this.setState({formError: <span className="error">{error}</span>});
+        this.setState({formError: <span className="form_error">{error}</span>});
     }
     
 };

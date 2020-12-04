@@ -26,6 +26,9 @@ export default class Home extends React.Component {
     }
     
     searchByName = (name) => {
-        this.setState({page: <SearchByName name={name} />});
+        this.setState({page: <SearchByName name={name} parent={this} />});
+    }
+    goHome = () => {       
+        this.setState({page: <Search parent={this} /> });
     }
 }
