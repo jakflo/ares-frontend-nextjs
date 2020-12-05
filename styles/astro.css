@@ -17,6 +17,10 @@ table.normTab tbody tr.marked {
     background-color: #00cc44;
 }
 
+th.sortable {
+    cursor: pointer;
+}
+
 .hidden {
     display: none;
 }
@@ -35,10 +39,10 @@ p.notice {
     color: blue;
 }
 
-tr.marked_edit {
+tr.marked_edit, th.sortable:hover {
     background-color: #ffff00;    
 }
-tr.marked_delete {
+tr.marked_delete, th.sortable.marked {
     background-color: #ff4d4d;    
 }
 

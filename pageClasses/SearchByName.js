@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SendRequest from '../SendRequest.js';
 import DisplayError from './DisplayError.js';
+import ThSortable from './ThSortable.js';
+import {sortObjectArray} from '../functions.js';
 import conf from '../conf.js';
 
 export default class SearchByName extends React.Component {
@@ -12,6 +14,7 @@ export default class SearchByName extends React.Component {
                 error: null
             };
             this.defaultData = [];
+            this.markedThSortable = null;
         }
         
         render () {
@@ -56,7 +59,11 @@ export default class SearchByName extends React.Component {
                         <table className={'normTab ' + hideEmptyTable}>
                             <tbody>
                                 <tr>
-                                    <th>#</th><th>IČO</th><th>Jméno firmy</th><th>adresa</th><th></th>
+                                    <ThSortable name="#" sortBy="n" parent={this} />
+                                    <ThSortable name="IČO" sortBy="ico" parent={this} />
+                                    <ThSortable name="Jméno firmy" sortBy="name" parent={this} />
+                                    <ThSortable name="adresa" sortBy="address" parent={this} />
+                                    <th></th>
                                 </tr>
                                 {tableData}
                             </tbody>
@@ -80,6 +87,22 @@ export default class SearchByName extends React.Component {
                         toto.setState({error: err});
                     })
             ;
+        }
+        
+        sortData = (columnName, sortByDesc) => {
+            var dataRecords = this.defaultData.records;
+            sortObjectArray(dataRecords, columnName, sortByDesc ? 'DESC' : 'ASC');
+            var data = this.state.data;
+            data.records = dataRecords;
+            this.setState({data: data});
+        }
+        setMarkedThSortable = (thSortable) => {
+            this.markedThSortable = thSortable;
+        }
+        unmarkMarkedThSortable = () => {
+            if (this.markedThSortable !== null) {
+                this.markedThSortable.unmark();
+            }
         }
         
         goBack = () => {
