@@ -8,15 +8,18 @@ export default class SendRequest {
                 url: url,
                 data: data, 
                 dataType: 'json', 
-                success: (data, stat) => {
-                    if (stat !== 200) {
+                success: (data, status) => {
+                    if (status === 'success') {
                         resolve(data);
                     }
                     else {
                         return reject(data);
                     }
                 },
-                error: () => {
+                error: (jqXHR) => {
+                    if (jqXHR.responseJSON !== undefined && jqXHR.responseJSON.error !== undefined) {
+                        return reject(jqXHR.responseJSON);
+                    }
                     return reject({error: 'server connection error'});
                 }, 
                 crossDomain: true
