@@ -16,6 +16,9 @@ export default function DisplayError({error}) {
             case 'too much records returned':
                 msg = 'Server vrátil příliš mnoho výsledků';
                 break;
+            case 'database connection error':
+                msg = 'Nepodařilo se připojit k místní databázy.';
+                break;
             default:
                 msg = 'Neznámá chyba serveru';
         }
