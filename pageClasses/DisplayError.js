@@ -8,6 +8,7 @@ export default function DisplayError({error}) {
                 msg = 'Nepodařilo se připojit k serveru';
                 break;
             case 'invalid input':
+            case 'empty query':
                 msg = 'Neplatná data pro server';
                 break;
             case 'server error':
@@ -15,6 +16,9 @@ export default function DisplayError({error}) {
                 break;
             case 'too much records returned':
                 msg = 'Server vrátil příliš mnoho výsledků';
+                break;
+            case 'no records found':
+                msg = 'Nebyl nalezen žádný záznam';
                 break;
             case 'database connection error':
                 msg = 'Nepodařilo se připojit k místní databázy.';
