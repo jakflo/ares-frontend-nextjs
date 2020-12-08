@@ -21,7 +21,8 @@ class DetailClass extends React.Component {
                 data: {}, 
                 dataLoaded: false, 
                 error: null, 
-                dataSaved: false
+                dataSaved: false, 
+                disableSaveButton: false
             };
         }
         
@@ -79,10 +80,14 @@ class DetailClass extends React.Component {
                             </table>
                         </div>
                         <ActivitiesList activitiesListArray={data.fieldOfActivity} />
-                        {
-                            !this.state.dataSaved && 
+                        {                             
                             data.source !== 'localDb' && 
-                            <button type="button" onClick={this.persist}>Uložit do databáze</button>
+                                <button 
+                                    type="button" 
+                                    disabled={this.state.disableSaveButton} 
+                                    onClick={this.persist}
+                                    >Uložit do databáze
+                                </button>
                         }
                         
                         {
@@ -116,12 +121,13 @@ class DetailClass extends React.Component {
         }
         
         persist = () => {
+            this.setState({disableSaveButton: true});
             var sendRequest = new SendRequest();
             var toto = this;
             sendRequest.fullReq('POST', conf.serverUrl + '/persist/' + this.props.ico, {})
-                    .then((data) => {
+                    .then((data) => {                        
                         toto.loadData();
-                        toto.setState({dataSaved: true});                                      
+                        toto.setState({dataSaved: true, disableSaveButton: false});                                      
                     })
                     .catch((err) => {
                         toto.setState({error: err});
