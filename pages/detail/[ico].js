@@ -20,7 +20,8 @@ class DetailClass extends React.Component {
             this.state = {
                 data: {}, 
                 dataLoaded: false, 
-                error: null                
+                error: null, 
+                dataSaved: false
             };
         }
         
@@ -42,11 +43,12 @@ class DetailClass extends React.Component {
             var data = this.state.data;
             var dataSource = data.source;
             if (data.source === 'localDb') {
-                dataSource = 'Místní databáze (uloženo ' + data.dataSaved + ' )';
+                dataSource = 'Místní databáze (uloženo ' + data.dateSaved + ' )';
             }
             return (                    
-                    <div id="company_detail">
+                    <div id="company_detail">            
                         <h1>Detail Firmy</h1>
+                        {this.state.dataSaved && <p className="notice">Záznam byl úspěšně uložen</p>}
                         <div id="basic_info_wrap">
                             <h2>Základní informace</h2>
                             <table id="basic_info" className="list">
@@ -77,7 +79,20 @@ class DetailClass extends React.Component {
                             </table>
                         </div>
                         <ActivitiesList activitiesListArray={data.fieldOfActivity} />
-                        <button type="button" onClick={this.persist}>Uložit do databáze</button>
+                        {
+                            !this.state.dataSaved && 
+                            data.source !== 'localDb' && 
+                            <button type="button" onClick={this.persist}>Uložit do databáze</button>
+                        }
+                        
+                        {
+                            data.source === 'localDb' && 
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {this.loadData(true);}}
+                                        >Načíst z Ares
+                                    </button>
+                        }
                         {homeButton}
                     </div>
                     );
@@ -105,7 +120,8 @@ class DetailClass extends React.Component {
             var toto = this;
             sendRequest.fullReq('POST', conf.serverUrl + '/persist/' + this.props.ico, {})
                     .then((data) => {
-                        console.log(data);                                        
+                        toto.loadData();
+                        toto.setState({dataSaved: true});                                      
                     })
                     .catch((err) => {
                         toto.setState({error: err});
